@@ -12,6 +12,17 @@ APlayerCharacter::APlayerCharacter()
 
 }
 
+void APlayerCharacter::SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) 
+{
+	Super::SetupPlayerInputComponent(PlayerInputComponent);
+	PlayerInputComponent->BindAxis(TEXT("MoveForward"), this, &APlayerCharacter::MoveForward);
+	PlayerInputComponent->BindAxis(TEXT("LookUp"), this, &APawn::AddControllerPitchInput);
+	PlayerInputComponent->BindAxis(TEXT("MoveRight"), this, &APlayerCharacter::MoveRight);
+	PlayerInputComponent->BindAxis(TEXT("LookRight"), this, &APawn::AddControllerYawInput);
+	PlayerInputComponent->BindAction(TEXT("Jump"), EInputEvent::IE_Pressed, this, &ACharacter::Jump);
+}
+
+
 // Called when the game starts or when spawned
 void APlayerCharacter::BeginPlay()
 {
@@ -23,13 +34,14 @@ void APlayerCharacter::BeginPlay()
 void APlayerCharacter::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
-
 }
 
-// Called to bind functionality to input
-void APlayerCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
+void APlayerCharacter::MoveForward(float AxisValue) 
 {
-	Super::SetupPlayerInputComponent(PlayerInputComponent);
-
+	AddMovementInput(GetActorForwardVector() * AxisValue);
 }
 
+void APlayerCharacter::MoveRight(float AxisValue)
+{
+	AddMovementInput(GetActorRightVector() * AxisValue);
+}
