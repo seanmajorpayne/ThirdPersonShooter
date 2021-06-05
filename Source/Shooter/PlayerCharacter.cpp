@@ -2,6 +2,7 @@
 
 
 #include "PlayerCharacter.h"
+#include "Gun.h"
 
 
 // Sets default values
@@ -27,6 +28,8 @@ void APlayerCharacter::SetupPlayerInputComponent(class UInputComponent* PlayerIn
 void APlayerCharacter::BeginPlay()
 {
 	Super::BeginPlay();
+
+	Gun = GetWorld()->SpawnActor<AGun>(GunClass);
 	
 }
 
